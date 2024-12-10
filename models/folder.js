@@ -1,9 +1,11 @@
 import mongoose ,{Schema} from "mongoose";
+import { type } from "os";
 
 const folderSchema = new Schema(
     {
         foldername: {type: String, require:true},
-        folderdesc: String,
+        folderdesc: { type:String, default:""},
+        userId: {type: Schema.Types.ObjectId, ref:"User", require:true},
     },
     {
         timestamps:true

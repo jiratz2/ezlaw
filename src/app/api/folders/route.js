@@ -128,10 +128,10 @@ import Folder from "../../../../models/folder";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
-    const { foldername, folderdesc} = await req.json();
+    const { userId,foldername, folderdesc} = await req.json();
     console.log(foldername,folderdesc);
     await connectMongoDB();
-    await Folder.create({foldername,folderdesc});
+    await Folder.create({userId,foldername,folderdesc});
     return NextResponse.json({ message: "Folder created"}, {status: 201});    
 }
 
