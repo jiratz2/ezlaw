@@ -1,3 +1,29 @@
+import { connectMongoDB } from "../../../../lib/mongodb";
+import Folder from "../../../../models/folder";
+import { NextResponse } from "next/server";
+
+export async function POST(req) {
+    const { userId,foldername, folderdesc} = await req.json();
+    console.log(foldername,folderdesc);
+    await connectMongoDB();
+    await Folder.create({userId,foldername,folderdesc});
+    return NextResponse.json({ message: "Folder created"}, {status: 201});    
+}
+
+export async function GET() {
+    await connectMongoDB();
+    const folders = await Folder.find({});
+    return NextResponse.json({ folders });
+}
+
+export async function DELETE(req) {
+    const id = req.nextUrl.searchParams.get("id"); 
+    await connectMongoDB();
+    await Folder.findByIdAndDelete(id);
+    return NextResponse.json({message: "Folder deleted"}, {status:200})
+}
+
+
 // const express = require('express');
 // const mongoose = require('mongoose');
 // const router = express.Router();
@@ -111,39 +137,3 @@
 // });
 
 // module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-import { connectMongoDB } from "../../../../lib/mongodb";
-import Folder from "../../../../models/folder";
-import { NextResponse } from "next/server";
-
-export async function POST(req) {
-    const { userId,foldername, folderdesc} = await req.json();
-    console.log(foldername,folderdesc);
-    await connectMongoDB();
-    await Folder.create({userId,foldername,folderdesc});
-    return NextResponse.json({ message: "Folder created"}, {status: 201});    
-}
-
-export async function GET() {
-    await connectMongoDB();
-    const folders = await Folder.find({});
-    return NextResponse.json({ folders });
-}
-
-export async function DELETE(req) {
-    const id = req.nextUrl.searchParams.get("id"); 
-    await connectMongoDB();
-    await Folder.findByIdAndDelete(id);
-    return NextResponse.json({message: "Folder deleted"}, {status:200})
-}

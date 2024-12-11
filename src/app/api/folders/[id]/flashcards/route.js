@@ -13,24 +13,24 @@ export async function POST(req) {
 }
 
 export async function GET() {
-    const folderId = req.nextUrl.searchParams.get('folderId');  // รับ folderId จาก query parameter
+    const folderId = req.nextUrl.searchParams.get('folderId');  
 
     if (!folderId || !mongoose.Types.ObjectId.isValid(folderId)) {
         return NextResponse.json({ message: "Invalid or missing folderId" }, { status: 400 });
     }
 
     try {
-        // เชื่อมต่อกับ MongoDB
+       
         await connectMongoDB();
 
-        // ค้นหา flashcards ใน folder ที่มี folderId
+        
         const flashcards = await Flashcard.find({ folderId });
 
         if (flashcards.length === 0) {
             return NextResponse.json({ message: "No flashcards found in this folder" }, { status: 404 });
         }
 
-        // ส่งคืนข้อมูล flashcards
+       
         return NextResponse.json({ flashcards });
     } catch (error) {
         console.error("Error fetching flashcards: ", error);
